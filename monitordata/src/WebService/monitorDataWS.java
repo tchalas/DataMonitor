@@ -14,6 +14,7 @@ public class monitorDataWS {
     private Connection conn;
     private final Object sync;
     public static Vector<DeviceInfo> buffer;
+    public static Vector<TerminalData> mobiles;
     private boolean flag;
     private int position;
     private boolean exists;
@@ -23,6 +24,7 @@ public class monitorDataWS {
         this.conn = conn;
         this.sync = sync;
         buffer = new Vector<DeviceInfo>();
+        mobiles = new Vector<TerminalData>();
     }
     
     @WebMethod
@@ -64,7 +66,7 @@ public class monitorDataWS {
                     }
                      */
                     //Wireless Interfaces removal
-                  /* for(int d = 0; d < buffer.elementAt(position).WirelessList.size(); d++){
+                 /* for(int d = 0; d < buffer.elementAt(position).WirelessList.size(); d++){
                         exists = false;
                         for(int y = 0; y < data.wirelessVector.size(); y++){
                             if(data.wirelessVector.elementAt(y).getInterfaceName().equals(buffer.elementAt(position).WirelessList.get(d))){
@@ -460,7 +462,7 @@ public class monitorDataWS {
                     newDevice.AccessPointList.add(data.apVector.elementAt(i).getMacAddress());      //ananewsi tou buffer meta tin eisagwgi sti vasi
                 }
                 newDevice.setTimeStamp(System.currentTimeMillis());                             //Setarisma tou xronou eisagwgis tis device stin endiamesi mnimi
-                monitorDataMF.grafiko.addDevice(name, buffer.size());
+                monitorDataMF.graph.Mobile.addDevice(name, buffer.size());
                 buffer.add(newDevice);      //vazoume ti nea siskeui stin endiamesi mnimi
                 
             }
@@ -468,5 +470,69 @@ public class monitorDataWS {
     }
     
     @WebMethod
-    public void setTerminalData(String device, TerminalData data){}
+    public void setTerminalData(String imei, String data){
+        PreparedStatement stmtInsert;
+        PreparedStatement stmtUpdate;
+       String array[] = data.split("/");
+        
+        synchronized(sync){
+            flag = false;
+            for(int i = 0; i < mobiles.size(); i++){                
+                if(mobiles.elementAt(i).getId().equals(imei)){       
+                    flag = true;
+                    position = i;
+                }
+            }
+            if(flag == true){
+                try{
+                    String update = "UPDATE MobileData SET latitude = ?, "
+                                    + "longitude = ?, "
+                                    + "batteryLevel = ?, "
+                                    + "batteryStatus = ?, "
+                                    + "model = ?, "
+                                    + "version = ?, "
+                                    + "manufacturer = ? "
+                                    + "WHERE androidID = ?";
+                    stmtUpdate = conn.prepareStatement(update);
+                    stmtUpdate.setString(8, imei);
+                    stmtUpdate.setDouble(1, Double.parseDouble(array[0]));
+                    stmtUpdate.setDouble(2, Double.parseDouble(array[1]));
+                    stmtUpdate.setInt(3, Integer.parseInt(array[2]));
+                    stmtUpdate.setString(4, array[3]);
+                    stmtUpdate.setString(5, array[4]);
+                    stmtUpdate.setString(6, array[5]);
+                    stmtUpdate.setString(7, array[6]);
+                    stmtUpdate.executeUpdate();
+                    stmtUpdate.close();
+                    System.out.println("UPDATE in Mobile Data SUCCESFULL");
+                }catch(SQLException e){e.printStackTrace();}
+                mobiles.elementAt(position).setTimeStamp(System.currentTimeMillis());
+            }
+            //////////////INSERTS///////////
+            else{
+                TerminalData newMobile = new TerminalData(imei);
+                try{
+                    String insertData = "INSERT INTO MobileData (androidID, latitude, longitude, batteryLevel,"
+                                + " batteryStatus, version, model, manufacturer) "
+                                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+                    stmtInsert = conn.prepareStatement(insertData);
+                    stmtInsert.setString(1, imei);
+                    stmtInsert.setDouble(2, Double.parseDouble(array[0]));
+                    stmtInsert.setDouble(3, Double.parseDouble(array[1]));
+                    stmtInsert.setInt(4, Integer.parseInt(array[2]));
+                    stmtInsert.setString(5, array[3]);
+                    stmtInsert.setString(6, array[4]);
+                    stmtInsert.setString(7, array[5]);
+                    stmtInsert.setString(8, array[6]);
+                    stmtInsert.executeUpdate();
+                    stmtInsert.close();
+                    System.out.println("INSERTION in Mobile Data SUCCESFULL");
+                }catch(SQLException e){}
+                newMobile.setTimeStamp(System.currentTimeMillis());
+                mobiles.add(newMobile);         //ananewsi tis mnimis
+                monitorDataMF.graph.Android.addDevice(imei, mobiles.size());
+                
+            }
+        }
+    }
 }

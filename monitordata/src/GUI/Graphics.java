@@ -34,7 +34,7 @@ public final class Graphics {
     Vector<Vector> wirelessdata;
     Vector<String> columns; 
     
-    final JFrame deviceFrame;
+ //   final JFrame deviceFrame;
     final JFrame addDevFrame;
     final JFrame interfaceType;
     final JFrame wired;
@@ -45,7 +45,7 @@ public final class Graphics {
 
     
     JPanel newDev;
-    JPanel devicePanel;
+ //   JPanel devicePanel;
     JPanel wiredDataPanel;
     JPanel wirelessDataPanel;
     JPanel interfaces;
@@ -99,20 +99,20 @@ public final class Graphics {
             }
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){}
         JFrame.setDefaultLookAndFeelDecorated(true);     
-        deviceFrame = new JFrame("System Devices");
+   //     deviceFrame = new JFrame("System Devices");
         addDevFrame = new JFrame("Devices:");
         addDevFrame.setSize(450,230);
         addDevFrame.setLocationRelativeTo(null);
-        deviceFrame.setLocationRelativeTo(null);
+    /*    deviceFrame.setLocationRelativeTo(null);
         deviceFrame.setSize(450,230);
         devicePanel = new JPanel();
         devicePanel.setLayout(new GridBagLayout());
-        devicePanel.setBorder(BorderFactory.createEtchedBorder());
+        devicePanel.setBorder(BorderFactory.createEtchedBorder());*/
         noDevices = new JLabel("No Devices Found! Please wait for a device to connect.");
         noDevices.setFont(new Font("Arial", Font.BOLD, 12));
-        devicePanel.add(noDevices, new GridBagConstraints(1, 1, 1, 1, 1, 1,GridBagConstraints.CENTER, GridBagConstraints.NONE,EMPTY_INSETS, 0, 0));
+     /*   devicePanel.add(noDevices, new GridBagConstraints(1, 1, 1, 1, 1, 1,GridBagConstraints.CENTER, GridBagConstraints.NONE,EMPTY_INSETS, 0, 0));
         deviceFrame.setContentPane(devicePanel);
-        deviceFrame.setVisible(true);
+        deviceFrame.setVisible(true);*/
         newDev = new JPanel();
         JLabel devLabel = new JLabel("Choose the device to show the interfaces");
         devLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -292,7 +292,7 @@ public final class Graphics {
         devName = name;
         devButton = new JButton(devName);
         newDev.add(devButton);
-        deviceFrame.setVisible(false);
+        StartGUI.DeviceFrame.setVisible(false);
         addDevFrame.setVisible(true);
         addDevFrame.setContentPane(newDev);
         newDev.setVisible(true);
@@ -311,7 +311,7 @@ public final class Graphics {
        addDevFrame.getContentPane().remove(j);
        if (monitorDataWS.buffer.isEmpty()){
            addDevFrame.setVisible(false);
-           deviceFrame.setVisible(true);
+           StartGUI.DeviceFrame.setVisible(true);
        }
     }
     

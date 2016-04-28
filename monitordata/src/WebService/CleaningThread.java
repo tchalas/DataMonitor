@@ -62,6 +62,18 @@ public class  CleaningThread implements Runnable {
                     }
                 }                                                                                                               
             }
+            for(int i = 0; i < monitorDataWS.mobiles.size(); i++){
+                if(((currTime = System.currentTimeMillis()) - (monitorDataWS.mobiles.elementAt(i).getTimeAdded())) > T ){
+                    try{
+                        String id = monitorDataWS.mobiles.elementAt(i).getId();         //ean o xronos apo tin teleutaia enimerwsi
+                        
+                        String cleanup = "DELETE FROM MobileData WHERE androidID = ?";             //tis trexon siskeuis einai megaliteros apo T
+                        stmtDelete = conn.prepareStatement(cleanup);                            //tote tha afairethoun ola ta interfaces autis tis siskeuis                                
+                        stmtDelete.setString(1, id);                                       //apo ti vasi kai tin endiamesi mnimi.
+                        stmtDelete.executeUpdate();
+                    }catch(SQLException e){e.printStackTrace();}
+                }
+            }
             try{
                 Thread.sleep(T);
             }catch(InterruptedException e){System.out.println("Cleanup Thread is stopped");}

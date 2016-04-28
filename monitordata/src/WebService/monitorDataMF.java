@@ -1,17 +1,20 @@
 package WebService;
 
+import GUI.AndroidGUI;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
 import javax.xml.ws.Endpoint;
 import MD.monitorData;
 import GUI.Graphics;
+import GUI.StartGUI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
 public class monitorDataMF {
     static Graphics grafiko;
+    static StartGUI graph;
     static Connection conn;
     static Thread t;
     
@@ -50,6 +53,9 @@ public class monitorDataMF {
             String deleteAP_RSS = "DELETE FROM AP_RSS;";
             stmt = conn.createStatement();
             stmt.executeUpdate(deleteAP_RSS);
+            String deleteMobileData = "DELETE FROM MobileData;";
+            stmt = conn.createStatement();
+            stmt.executeUpdate(deleteMobileData);
             
             Object sync = new Object();
             
@@ -67,7 +73,13 @@ public class monitorDataMF {
             t = new Thread(cleanup);
             t.start();
             
-            grafiko = new Graphics(conn);
+          //  grafiko = new Graphics(conn);
+            
+       //     graph = new AndroidGUI(conn);
+            
+            graph = new StartGUI(conn);
+            graph.SetAndroidGUI();
+            graph.SetMobileGUI();
             
         }catch(ClassNotFoundException | SQLException | IOException e){e.printStackTrace();}
         Runtime.getRuntime().addShutdownHook(new Thread(){
