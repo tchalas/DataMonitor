@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2.4-b01. --><xs:schema xmlns:tns="http://WebService/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://WebService/">
+
+<xs:element name="setMonitorData" type="tns:setMonitorData"></xs:element>
+
+<xs:element name="setMonitorDataResponse" type="tns:setMonitorDataResponse"></xs:element>
+
+<xs:element name="setTerminalData" type="tns:setTerminalData"></xs:element>
+
+<xs:element name="setTerminalDataResponse" type="tns:setTerminalDataResponse"></xs:element>
+
+<xs:complexType name="setTerminalData">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="arg1" type="tns:terminalData" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="terminalData">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setTerminalDataResponse">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setMonitorData">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="arg1" type="tns:monitorData" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="monitorData">
+<xs:sequence>
+<xs:element name="wiredVector" type="tns:wired" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="wirelessVector" type="tns:wireless" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="apVector" type="tns:accessPoint" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="wired">
+<xs:sequence>
+<xs:element name="broadcastAddress" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="currTranferRate" type="xs:double"></xs:element>
+<xs:element name="currUsedBandwidth" type="xs:double"></xs:element>
+<xs:element name="defaultGateway" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="interfaceName" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="ipAddress" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="macAddress" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="mask" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="maxTransferRate" type="xs:int"></xs:element>
+<xs:element name="netAddress" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="packetErrorRate" type="xs:double"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="wireless">
+<xs:complexContent>
+<xs:extension base="tns:wired">
+<xs:sequence>
+<xs:element name="accessPointStatus" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="channel" type="xs:int"></xs:element>
+<xs:element name="connectionQuality" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="descartedPackages" type="xs:int"></xs:element>
+<xs:element name="essid" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="noise" type="xs:int"></xs:element>
+<xs:element name="receivedSignalStrenght" type="xs:int"></xs:element>
+<xs:element name="transmittedSignal" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="WMac" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="accessPoint">
+<xs:sequence>
+<xs:element name="channel" type="xs:int"></xs:element>
+<xs:element name="ESSID" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="macAddress" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="signalStrength" type="xs:int"></xs:element>
+<xs:element name="status" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setMonitorDataResponse">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+</xs:schema>
